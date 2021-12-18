@@ -1,10 +1,19 @@
 const { Pool } = require('pg');
+const dotenv = require('dotenv');
+dotenv.config();
+
+// const pool = new Pool({
+//   user: 'postgres',
+//   password: '123',
+//   host: 'localhost',
+//   database: 'travel_calculator'
+// });
 
 const pool = new Pool({
-  user: 'postgres',
-  password: '123',
-  host: 'localhost',
-  database: 'travel_calculator'
+  connectionString: process.env.PROD_URI,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 const addClient =  function(client) {
