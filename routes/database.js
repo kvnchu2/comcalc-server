@@ -21,11 +21,36 @@ const addClient =  function(client) {
   INSERT INTO clients (name, address)
   VALUES ($1, $2) returning *;
   `, [client.name, client.address])
-  .then(res => {
-    return res;
-  })
-  .catch(err => {
-    console.log("error message", err);
-  });
-}
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      console.log("error message", err);
+    });
+};
+
 exports.addClient = addClient;
+
+const getAllClients = function() {
+  return pool.query(`
+    SELECT * from CLIENTS;
+    `)
+    .then(res => res.rows);
+};
+
+exports.getAllClients = getAllClients;
+
+const deleteClient = function(id) {
+  return pool.query(`
+    DELETE FROM CLIENTS
+    WHERE id = $1;
+    `, [id])
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      console.log("error message", err);
+    });
+};
+
+exports.deleteClient = deleteClient;
