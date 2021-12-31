@@ -18,9 +18,9 @@ const pool = new Pool({
 
 const addClient =  function(client) {
   return pool.query(`
-  INSERT INTO clients (name, address)
-  VALUES ($1, $2) returning *;
-  `, [client.name, client.address])
+  INSERT INTO clients (name, address, provider)
+  VALUES ($1, $2, $3) returning *;
+  `, [client.name, client.address, client.provider])
     .then(res => {
       return res;
     })
@@ -54,3 +54,35 @@ const deleteClient = function(id) {
 };
 
 exports.deleteClient = deleteClient;
+
+const findIcbcClient = function(name) {
+  return pool.query(`
+    SELECT * from CLIENTS
+    WHERE name = $1 
+    AND (provider = 'ICBC' OR provider = '');
+    `, [name])
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      console.log("error message", err);
+    });
+};
+
+exports.findIcbcClient = findIcbcClient;
+
+const findWsbcClient = function(name) {
+  return pool.query(`
+    SELECT * from CLIENTS
+    WHERE name = $1 
+    AND (provider = 'WSBC' OR provider = '');
+    `, [name])
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      console.log("error message", err);
+    });
+};
+
+exports.findWsbcClient = findWsbcClient;
