@@ -18,9 +18,9 @@ const pool = new Pool({
 
 const addClient =  function(client) {
   return pool.query(`
-  INSERT INTO clients (name, address, provider)
-  VALUES ($1, $2, $3) returning *;
-  `, [client.name, client.address, client.provider])
+  INSERT INTO clients (name, address, provider, end_date)
+  VALUES ($1, $2, $3, $4) returning *;
+  `, [client.name, client.address, client.provider, client.end_date])
     .then(res => {
       return res;
     })
@@ -55,12 +55,13 @@ const deleteClient = function(id) {
 
 exports.deleteClient = deleteClient;
 
-const editAddress = function(id,address) {
+const editClient = function(id,address, endDate) {
   return pool.query(`
     UPDATE CLIENTS
     SET ADDRESS = $2
-    WHERE id = $1;
-    `, [id, address])
+    WHERE id = $1
+    AND end_date = $3;
+    `, [id, address, endDate])
     .then(res => {
       return res;
     })
@@ -69,7 +70,7 @@ const editAddress = function(id,address) {
     });
 };
 
-exports.editAddress = editAddress;
+exports.editAddress = editClient;
 
 const findIcbcClient = function(name) {
   return pool.query(`
