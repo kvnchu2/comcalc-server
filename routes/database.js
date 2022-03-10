@@ -58,9 +58,9 @@ exports.deleteClient = deleteClient;
 const editClient = function(id,address, endDate) {
   return pool.query(`
     UPDATE CLIENTS
-    SET ADDRESS = $2
-    WHERE id = $1
-    AND end_date = $3;
+    SET ADDRESS = $2,
+    end_date = $3
+    WHERE id = $1;
     `, [id, address, endDate])
     .then(res => {
       return res;
@@ -70,7 +70,7 @@ const editClient = function(id,address, endDate) {
     });
 };
 
-exports.editAddress = editClient;
+exports.editClient = editClient;
 
 const findIcbcClient = function(name) {
   return pool.query(`
